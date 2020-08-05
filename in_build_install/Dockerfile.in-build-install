@@ -1,0 +1,16 @@
+FROM centos:7
+RUN  yum install -y wget python vim-enhanced nano epel-release postgresql-server
+RUN  rpm --import https://packages.irods.org/irods-signing-key.asc
+RUN  wget -qO - https://packages.irods.org/renci-irods.yum.repo | tee /etc/yum.repos.d/renci-irods.yum.repo
+RUN  yum install -y postgresql-server irods-server irods-database-plugin-postgres
+RUN su - postgres -c "/usr/bin/pg_ctl initdb -D /var/lib/pgsql/data"
+ENV PSQL_IRODS_INIT="CREATE USER irods WITH PASSWORD 'testpassword'; \
+                     CREATE DATABASE \"ICAT\"; \
+                     GRANT ALL PRIVILEGES ON DATABASE \"ICAT\" TO irods;"
+SHELL ["/bin/bash", "-c"]
+RUN su - postgres -c "/usr/bin/pg_ctl -D /var/lib/pgsql/data -l logfile start; sleep 8; psql -c '\l' >/dev/null 2>&1" && \
+    su postgres -c psql <<<"$PSQL_IRODS_INIT" && \
+    python /var/lib/irods/scripts/setup_irods.py < /var/lib/irods/packaging/localhost_setup_postgres.input && \
+    su - irods -c "/var/lib/irods/irodsctl stop" && \
+    su - postgres -c "/usr/bin/pg_ctl stop" && hostname >/tmp/hostname
+CMD  bash
