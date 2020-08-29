@@ -14,4 +14,7 @@ RUN useradd -m -s/bin/bash cen7
 RUN usermod -aG wheel cen7
 RUN chpasswd <<<"cen7:${password}"
 COPY do_install.sh /
+COPY rsyslogd_conf.patch /
+RUN yum install -y patch rsyslog
+RUN patch /etc/rsyslog.conf < /rsyslogd_conf.patch
 RUN chmod +x /do_install.sh
