@@ -39,6 +39,7 @@ install_prereqs()
 
 db_ctl()
 {
+  [ "$1" = restart ] && { db_ctl stop ; db_ctl start; return; }
   can_be_root || return 126
   if pgrep -f -u postgres bin/postgres >/dev/null
   then
