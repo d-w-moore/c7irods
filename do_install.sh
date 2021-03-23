@@ -1,4 +1,6 @@
-. /irods_setup.bash 
+#!/bin/bash
+DIR=$(dirname "$0")
+. "$DIR"/irods_setup.bash
 ensure_preinstall_pkgs 
 install_prereqs 
 db_ctl start
