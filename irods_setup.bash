@@ -98,4 +98,22 @@ init_database_and_user()
   $SUDO su - postgres -c "$PSQL_IRODS_INIT"
 }
 
-#
+# ---
+
+SOURCE_DIR=$(dirname "${BASH_SOURCE[0]}")
+
+if [ -r /tmp/preinstall.txt ]; then
+    PREINSTALL=$(cat /tmp/preinstall.txt)
+elif [ -r "$SOURCE_DIR"/preinstall.txt ]; then
+    PREINSTALL=$(cat "$SOURCE_DIR"/preinstall.txt)
+else
+    PREINSTALL="wget sudo"
+fi
+
+if [ -r /tmp/db_wait_sec.sh ]; then
+    source /tmp/db_wait_sec.sh
+elif [ -r "$SOURCE_DIR"/db_wait_sec.sh ]; then
+    source "$SOURCE_DIR"/db_wait_sec.sh
+else
+    DB_WAIT_SEC=30
+fi

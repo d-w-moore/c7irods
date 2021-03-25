@@ -1,0 +1,1 @@
+wget vim-enhanced tig gcc-c++ make

@@ -1,0 +1,1 @@
+DB_WAIT_SEC=15
