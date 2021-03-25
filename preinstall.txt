@@ -1,1 +1,1 @@
-wget vim-enhanced tig gcc-c++ make
+wget sudo vim-enhanced tig gcc-c++ make
