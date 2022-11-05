@@ -1,0 +1,5 @@
+pip3 install distro
+yum install python3-devel
+yum install -y unixODBC-devel.x86_64
+pip3 install pyodbc
+python3 /var/lib/irods/scripts/setup_irods.py < /var/lib/irods/packaging/localhost_setup_postgres.input 
